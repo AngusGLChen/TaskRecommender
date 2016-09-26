@@ -1,0 +1,14 @@
+{ "1": ["string",
+        "condition"],
+  "2": ["lookup",
+        "vlookup"],
+  "3": ["pivot table",
+        "powermap"],
+  "4": ["name ranges"],
+  "5": ["array formulas"],
+  "6": ["testing"],
+  "7": ["python",
+        "datanitro"],
+  "8": ["neo4j",
+        "graph"]
+}
