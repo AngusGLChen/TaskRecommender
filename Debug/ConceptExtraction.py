@@ -70,17 +70,10 @@ def ExtractConcepts(path):
         for term in frequent_terms:
             print term
         print
-        
-    
-                    
-                    
-                    
-            
-
-
-
-
 
 path = "/Users/Angus/Downloads/video_scripts/"
 ExtractConcepts(path)
 print "Finished."
+
+
+

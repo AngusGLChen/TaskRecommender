@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+
+		<script src="resources/jquery.min.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="resources/semantic.ui/semantic.min.css">
+        <script src="resources/semantic.ui/semantic.min.js"></script>        
+
+        <script type="text/javascript">
+
+            function getParameterByName(name, url) {
+                if (!url) url = window.location.href;
+                name = name.replace(/[\[\]]/g, "\\$&");
+                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                    results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, " "));
+            };
+
+            function SendEvent(week, task_id) {
+                anonId = getParameterByName('anonId')
+                $.getJSON("tracking.py", {"week":week, "anonId":anonId, "task_id":task_id}, function(){
+                });
+            };                  
+            
+            function GetRecommendations(){
+                
+                var showData = $('#show-data');
+
+                week = getParameterByName('week');
+                anonId = getParameterByName('anonId')
+                                              
+                $.getJSON("get_recommendation.py", {"week":week, "anonId":anonId}, function(data){
+
+                	var html_text = "<table class=\"ui celled padded table\" style=\"font-size:16px;border:None\">";
+
+                    $.each(data, function(index, object) {
+                        
+                        var id_value = ""
+                        var title_value = ""
+                        var budget_value = ""
+                        var snippet_value = ""
+                        var url_value = ""
+                        var skills_value = ""
+
+                        $.each(object, function(key, value) {
+
+                            if (key == "task_id") { id_value = value; }
+                            if (key == "title") { title_value = value; }
+                            if (key == "budget") { budget_value = value; }
+                            if (key == "snippet") { snippet_value = value; }
+                            if (key == "url") { url_value = value; }
+                            if (key == "skills") { skills_value = value; }
+
+                        });
+
+                        snippet_value = snippet_value.substring(0,250) + "...  ";
+
+                        skill_html_text = ""
+
+                        $.each(skills_value, function(key, value){
+                            if (value == 1) {skill_html_text += "<a class=\"ui blue tag label\">" + key + "</a>"};
+                            if (value == 0) {skill_html_text += "<a class=\"ui tag label\" style=\"background-color:#D35A57;font-weight:bold;color:white\">" + key + "</a>"};
+                        })
+                       
+                        if (skill_html_text == "") {
+                            skill_html_text += "<a class=\"ui tag label\" style=\"background-color:#D35A57;font-weight:bold;color:white\">Not listed</a>"
+                        }
+                        
+                    	html_text += "<tr><th style=\"border:None\"><i class=\"tasks icon big\" style=\"color:#2975DC\"></th><th style=\"border:None;font-size:18px\">" + title_value + "</th>";                        
+                    	html_text += "<th style=\"border:None\"><i class=\"dollar icon large\" style=\"color:#2975DC\">" + budget_value + "</i></th></tr>"
+                        html_text += "<tr><td style=\"border:None\"></td><td colspan=\"2\" style=\"border:None\"><p><b>Required Skills</b>: " + skill_html_text + "</p></td></tr>";
+                        html_text += "<tr><td style=\"border:None\"></td><td colspan=\"2\" style=\"border:None\"><p><b>Description</b>: " + snippet_value + "<a class=\"ui green label\" href=" + url_value + " target=\"_blank\" onclick=\"SendEvent(" + week + ",\'" + id_value + "\');\">Go to Upwork now</a>" + "</td></tr><tr><td colspan=\"3\" style=\"border:None\"></p></td></tr>";
+
+                      });
+
+                     html_text += "</table>"                    
+                    
+                                           
+                    showData.html(html_text);
+
+                    });
+                };
+        </script>
+
+	</head>
+	<body onload="GetRecommendations();" style="padding:0 40px 0 40px">
+		<h1 class="ui header">From Learners to Earners</h1>
+		<img class="ui centered large image" src="resources/vision.png">
+        <br>
+		<p style="font-size:18px">What can you do with the knowledge acquired from this MOOC? Take a look at the tasks below, which are currently open in the freelance platform Upwork. Head over to UpWork and check out whether you could earn extra money.  Challenge yourself and have fun!</p>		
+		<div id="show-data"></div>
+        <button class="ui blue button" style="float:right" onclick="GetRecommendations();">More tasks</button>        
+	<body>
+</html>

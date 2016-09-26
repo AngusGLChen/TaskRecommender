@@ -212,7 +212,7 @@ certificate_path = '/root/cacert.pem'
 course_content_path = "/root/course_content"
 
 mysql_profile = {"user": "root",
-                 "password": "glchenmorepapers",
+                 "password": "",
                  "host": "127.0.0.1",
                  "database": "UpworkTasks"}
 

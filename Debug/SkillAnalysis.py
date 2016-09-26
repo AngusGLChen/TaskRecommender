@@ -9,7 +9,7 @@ import mysql.connector, operator
 
 def AnalyzeSkills():
     
-    connection = mysql.connector.connect(user="dan", password="QgPLI26qLuWrffDy", host="145.100.59.133", database="UpworkTasks")
+    connection = mysql.connector.connect(user="", password="", host="", database="UpworkTasks")
     cursor = connection.cursor()
     
     sql = "SELECT tasks.skills FROM tasks where tasks.suitable_mark = True;"

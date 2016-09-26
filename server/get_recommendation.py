@@ -12,7 +12,7 @@ form = cgi.FieldStorage()
 print("Content-Type: text/html")
 print()
 
-connection = pymysql.connect(user="root", password="glchenmorepapers", host="localhost", database="UpworkTasks")
+connection = pymysql.connect(user="root", password="", host="localhost", database="UpworkTasks")
 cursor = connection.cursor()
 
 ###################################
